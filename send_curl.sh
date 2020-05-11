@@ -15,7 +15,6 @@
 #
 # Todos: 
 # -Macro File not sufficient
-# -corrupt sample needed
 # -tracking message needed
 #############################################################################################################
 # colorize function
@@ -462,11 +461,46 @@ sm () {
 			echo "Message-Id: <$(date "+%m%d%H%M%Y")-114054033-4711@$helo>"
 			echo "Date: $(date -R)"
 			echo "MIME-Version: 1.0"
-			echo "Content-Type: text/plain; charset=utf-8; format=flowed"
-			echo "Content-Transfer-Encoding: 8bit"
-			echo "Content-Language: en-US"
+			echo 'Content-Type: multipart/mixed;'
+			echo ' boundary="------------5A2FDDB2EB722F44993C6192"'
+			echo 'Content-Language: de-DE'
 			echo ''
-			echo "Hallo $each"
+			echo 'This is a multi-part message in MIME format.'
+			echo '--------------5A2FDDB2EB722F44993C6192'
+			echo 'Content-Type: text/plain; charset=utf-8'
+			echo 'Content-Transfer-Encoding: 7bit'
+			echo ''
+			echo ''
+			echo '--------------5A2FDDB2EB722F44993C6192'
+			echo 'Content-Type: application/zip; x-mac-type="0"; x-mac-creator="0";'
+			echo ' name="broken_zip.zip"'
+			echo 'Content-Transfer-Encoding: base64'
+			echo 'Content-Disposition: attachment;'
+			echo ' filename="broken_zip.zip"'
+			echo ''
+			echo 'UEsDBBQAAAAAAAAAIQAAAAAACwQAAAsEAAAJAAAAdGVzdF9maWxlRGVsZWN0dXMgcXVhcyBj'
+			echo 'dW0gZXQgbmVxdWUgYXBlcmlhbSBxdWlidXNkYW0gY29uc2VxdXVudHVyCmF1dC4gQXJjaGl0'
+			echo 'ZWN0byBmdWdpYXQgZG9sb3JlbXF1ZSBzb2x1dGEgc2FlcGUgdG90YW0uIFJlcHJlaGVuZGVy'
+			echo 'aXQgYXV0IGFsaWFzCnF1aWEgcGxhY2VhdC4gTmVxdWUgZWl1cyBjb25zZXF1YXR1ciBpZCBl'
+			echo 'c3QgZXQuIEFsaXF1YW0gZXQgdmVsaXQgcXVpIGVuaW0KY3VtcXVlLgoKU3VzY2lwaXQgY3Vw'
+			echo 'aWRpdGF0ZSBlYSBxdWlzcXVhbSBhc3BlcmlvcmVzIGNvcnJ1cHRpIGFkaXBpc2NpIHZvbHVw'
+			echo 'dGF0ZW0gaWxsby4KRnVnaWF0IHF1aXMgZGViaXRpcyBlYXJ1bSByZWN1c2FuZGFlIG5hbSB1'
+			echo 'dC4gUXVpIHZlbGl0IGV2ZW5pZXQgbWFpb3JlcyBxdWFzIGlkCnBsYWNlYXQuCgpTdXNjaXBp'
+			echo 'dCBtYWduaSBxdWkgbmVzY2l1bnQgcGVyZmVyZW5kaXMgcXVvIGluIG1vbGxpdGlhIG5lc2Np'
+			echo 'dW50LiBUZW1wb3JlCmRlbGVjdHVzIHJlbSBkdWNpbXVzIHRlbXBvcmUgdGVtcG9yaWJ1cyBj'
+			echo 'b25zZXF1YXR1ciByZXJ1bS4gSW5jaWR1bnQgZXQgYXV0IGEgdXQKZXQgY29uc2VxdWF0dXIg'
+			echo 'bWFnbmkgcXVvZC4gU2VkIGRvbG9yZW1xdWUgZG9sb3JpYnVzIGlwc2FtIHN1bnQgbGliZXJv'
+			echo 'IGV0LgoKQXV0IHF1aWEgc2ltaWxpcXVlIHF1b2QgY3VtcXVlIG9jY2FlY2F0aS4gRWFxdWUg'
+			echo 'bGliZXJvIHNpbnQgbm9zdHJ1bSBmdWdhCnN1c2NpcGl0IHF1YWVyYXQgZHVjaW11cy4gRG9s'
+			echo 'b3JlbSBxdW9kIHNpdCBjb3Jwb3Jpcy4gRGViaXRpcyB2ZW5pYW0gcXVhZQplbGlnZW5kaSB1'
+			echo 'dCBhdXRlbSB2b2x1cHRhdGlidXMgc2FlcGUuIFF1aXMgZG9sb3JlbSBub3N0cnVtIGZ1Z2lh'
+			echo 'dCBxdW9zLgoKRXQgbW9sZXN0aWFzIGF0IGV4ZXJjaXRhdGlvbmVtIHZlbCByZXJ1bSBleCB2'
+			echo 'b2x1cHRhdGUuIE5paGlsIGVhcXVlIG9tbmlzCmV2ZW5pZXQgaWQgY3VwaWRpdGF0ZSBxdWku'
+			echo 'IFZlbGl0IHF1aWJ1c2RhbSBuaWhpbCBwb3NzaW11cyB2b2x1cHRhdGUgcXVvZAp2ZW5pYW0u'
+			echo 'IEVzdCBsaWJlcm8gY3VtIGRvbG9yIGNvbnNlcXVhdHVyIGlwc2FtIGVzdCB1dC4KUEsBAhQD'
+			echo 'FAAAAAAAAAAhAAAAAAALBAAACwQAAAkAAAAAAAAAAAAAAIABAAAAAHRlc3RfZmlsZVBLBQYA'
+			echo 'AAAAAQABADcAAAAyBAAAAAA='
+			echo '--------------5A2FDDB2EB722F44993C6192--'
 		) > "$mail"
 		;;
 		# Bulk Sender
