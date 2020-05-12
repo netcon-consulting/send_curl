@@ -33,7 +33,7 @@ sm () {
 #############################################################################################################
 	recipients="$1"
 	switch="$2" # case selector for different message templates
-	sender=mailtest@isdoll.de
+	sender=evil@evil-domain.com
 	mail=/tmp/email.txt
 	helo=$(dig +short -x $(dig +short myip.opendns.com @resolver1.opendns.com)|sed s/.$//)
 	if [ -z "$1" ]
@@ -411,7 +411,7 @@ sm () {
 			echo "</HEAD>"
 			echo "<BODY bgColor=#ffffff>"
 			echo "<DIV align=center><FONT size=2 face=Arial><A"
-			echo 'href="https://www.b6kkoniv.space/btc-outlet/"><IMG border=0 hspace=0 alt="" src="http://external.isdoll.de/evil-tracker.jpg" width=1 height=1></A></FONT></DIV></BODY></HTML>'
+			echo 'href="https://www.b6kkoniv.space/btc-outlet/"><IMG border=0 hspace=0 alt="" src="http://external.evil-domain.com/evil-tracker.jpg" width=1 height=1></A></FONT></DIV></BODY></HTML>'
 			echo "------=_NextPart_000_0007_01D624F7.16387890"
 		) > "$mail"
 		;;
@@ -528,7 +528,7 @@ sm () {
 			echo "Subject: Gruesse aus Berlin"
 			echo "To: <$each>"
 			echo "From: 'Angela Merkel' <bundeskanzler@bund.de>"
-			echo "Reply-to: <uwe@usommer.de>"
+			echo "Reply-to: <evil@evil-domain.com>"
 			echo "Message-Id: <$(date "+%m%d%H%M%Y")-114054033-4711@$helo>"
 			echo "Date: $(date -R)"
 			echo "MIME-Version: 1.0"
@@ -550,7 +550,7 @@ sm () {
 		echo "greylisting detected, waiting 300 Secs for retry" 
 		echo "$(date)"
 		sleep 300 && curl -k --ssl smtp://"$server"/"$helo" --mail-from "$sender" --mail-rcpt "$each" --upload-file "$mail" 
-		else echo "Message sent"
+		else echo "\033[31mMessage sent successfull\033[0m"
 		fi
 	}
 	main () {
