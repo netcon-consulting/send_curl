@@ -47,6 +47,7 @@ set -x
 	direct_server="$3"
 	# change this path to your git directory
 	template_path=~/Nextcloud/central-configs/send_curl
+	#template_path="$({BASH_SOURCE%/*}"
 	# template mail file will be created dynamically
 	mail=/tmp/email.txt
 	# get my external ip, do reverse lookup and use this as heloname
@@ -66,7 +67,7 @@ set -x
 #############################################################################################################
 	dig_server () {
 		# if there is a third param, take this as server
-		if ! [ -z "$direct_server" ] ; then
+		if [ -n "$direct_server" ] ; then
 		server="$direct_server"
 		echo "static server: $server"
 		# if the second param looks like an ip or server, take this as server
@@ -110,19 +111,22 @@ set -x
 	fi
 	# sending mail template via curl to destination server
 	send_mail () {
-		curl -k --ssl smtp://"$server"/$helo --mail-from "$sender" --mail-rcpt "$each" --upload-file "$mail"
+		curl -k --ssl smtp://"$server"/"$helo" --mail-from "$sender" --mail-rcpt "$each" --upload-file "$mail"
 		if [ "$?" -eq "55" ] ;then
 		echo "greylisting detected, waiting 300 Secs for retry" 
-		echo "$(date)"
-		sleep 300 && curl -k --ssl smtp://"$server"/"$helo" --mail-from "$sender" --mail-rcpt "$each" --upload-file "$mail" 
+		date
+		sleep 300 
+		send_mail
 		else echo "\033[31mMessage sent successfull\033[0m"
 		fi
 	}
 	# get destination server and send email
 	main () {
+		# get destination mailserver
 		dig_server
 		echo -e "Recipient:  \033[31m$each\033[0m"
 		echo -e "Mailserver: \033[31m$server\033[0m"
+		# send composed message body via curl
 		send_mail
 	}
 ############################################################################################################
@@ -130,11 +134,12 @@ set -x
 ############################################################################################################
 # enumerate listfile for recipients
 if [ -f "$recipients" ] ;then
-    for each in $(cat < "$recipients") 
+    # maybe: while read $recipients; do ..
+    while read -r each   
 		do 
 		compose_message
 		main 
-		done 
+		done < "$recipients"
 	else
 	# first param is recipient
 	each="$1"
@@ -145,15 +150,18 @@ if [ -f "$recipients" ] ;then
 		echo -e "Recipient:  \033[31m$each\033[0m"
 		echo -e "Mailserver: \033[31m$server\033[0m"
 		COUNTER=1
-		for i in $(seq $switch); do
-			echo "Message Number: $COUNTER"
+		# do i need "i" ?
+		for i in $(seq "$switch"); do
+			echo "Message Number: $i"
      		compose_message
 			send_mail
 			COUNTER=$(( COUNTER+1 ))
 		done
 		echo "\033[31m$((COUNTER-1)) Messages were sent\033[0m"
 		else
+	# choose message body
 	compose_message
+	# send email to destination server(s)
 	main
 	fi
 fi
