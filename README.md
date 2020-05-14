@@ -14,8 +14,12 @@ These templates can be used to test mailfilters.
  Install:
   "source sm.sh" and "source  compose_message" or include these in your bashrc as function by adding this line
  and replace the path:
+ 
  for f in ~/dir/functions/*; do source $f; done
+ 
  Usage:
-  "sm recipient type"
+ 
+ "sm recipient type"
+ 
  Type can be: macro,html,url,virus,spam,corrupt,spoof or massmailing (1-100)
  recipient can also be a file with a list of recipients (not for massmailings)
