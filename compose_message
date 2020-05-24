@@ -475,7 +475,7 @@ Deine Angela
 EOF
 ;;
 # Bulk Sender
-<2-100>)
+[1-9]|[1-9][0-9])
 cat > "$mail" <<EOF  
 X-SPAM: NO
 Subject: Massmailing Message Number: $COUNTER of $switch
@@ -514,4 +514,18 @@ Deine Angela
 EOF
 ;;
 esac
+# Todo:
+#
+# qr-code
+# exe in zip
+# exe in iso
+# makro in zip
+# exe in iso
+# activex in office
+# oleoject in office
+# vbscript, jsscript, python, perl, java ..
+# eml nested attachments
+# pyzor, razor hit
+# Phishing
+# office97 with makro
 }
