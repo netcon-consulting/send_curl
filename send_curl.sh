@@ -45,6 +45,9 @@ e_error () { # colorize function for errors in red
 sm () { # main function
 #############################################################################################################
 #set -x # debug switch
+gettemplates() {
+	typeset -f compose_message |grep -e "[a-z]*)" |grep -v "date\|*\|template\|compose_message\|\[" |awk '{print $1}' |tr -d "()" |tr '\n' ' '
+}
 helptext(){
 cat <<EOF
 
@@ -52,12 +55,26 @@ cat <<EOF
 	sm depends on curl and requires 1-3 params
 	
 	email address or email address file argument required
-	second param can define message type: macro,html,url,virus,spam,corrupt,spoof or 1-100
+	second param can define message type: 
+			
+	$(e_error)$(gettemplates)
+	
 	an optional third paramter defines destination server
 	
-	example: ${red}'sm test@example.com spam'${reset}
+	Examples: 
+	${red}'sm test@example.com spam'${reset}
 	this will send a spammail to test@example.com
-	mail templates can be defined in the 'compose_message' function
+
+	${red}'sm test@example.com spam destserver'${reset}
+	this will send a spammail to test@example.com on server destserver
+
+	${red}'sm -vs validsender test@example.com'${reset}
+	this will get a DSN notification if the destination server supports it to validsender
+
+	${red}'sm test@example.com 10'${reset}
+	this will send 10 messages to test@example.com
+
+	additional mail templates can be defined in the 'compose_message' function
 EOF
 }
 #############################################################################################################
