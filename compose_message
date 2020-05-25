@@ -17,7 +17,8 @@ compose_message() {
 case "$switch" in
 #############################################################################################
 # template
-template) cat > "$mail" <<EOF
+template) 
+cat > "$mail" <<EOF
 X-SPAM: NO
 Subject: template
 To: <"$each">
@@ -29,7 +30,8 @@ EOF
 ;;
 #############################################################################################
 # pdfactive
-pdfactive) cat > "$mail" <<EOF
+pdfactive) 
+cat > "$mail" <<EOF
 X-SPAM: NO
 To: <"$each">
 From: 'Evil Sender' <evil@evil-domain.com>
@@ -1605,7 +1607,8 @@ EOF
 ;;
 #############################################################################################
 # jscript
-jscript) cat > "$mail" <<EOF
+jscript) 
+cat > "$mail" <<EOF
 X-SPAM: NO
 Subject: Javascript
 To: <"$each">
@@ -1636,7 +1639,8 @@ EOF
 ;;
 #############################################################################################
 # excel Macro
-excelmacro) cat > "$mail" <<EOF
+excelmacro) 
+cat > "$mail" <<EOF
 X-SPAM: NO
 Subject: excel macro
 To: <"$each">
