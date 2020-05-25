@@ -1,5 +1,23 @@
+#############################################################################################
+# Message Templates for send_curl function
+#
+# Todo:
+# qr-code
+# exe in zip
+# exe in iso
+# makro in zip
+# exe in iso
+# activex in office
+# oleoject in office
+# vbscript, jsscript, python, perl, java ..
+# eml nested attachments
+# pyzor, razor hit
+# Phishing
+# office97 with makro
+#############################################################################################
 compose_message() {
 case "$switch" in
+#############################################################################################
 # Eicar Virus Test
 virus)
 cat > "$mail" <<EOF
@@ -32,6 +50,7 @@ RVNULUZJTEUhJEgrSCo=
 --------------11C9D15A08B345C2A6100327--
 EOF
 ;;
+#############################################################################################
 # GTUBE Spamtest
 spam)
 cat > "$mail" <<EOF  
@@ -50,6 +69,7 @@ Hallo "$each"
 XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
 EOF
 ;;
+#############################################################################################
 # executable attachment
 exe)
 cat > "$mail" <<EOF  
@@ -105,6 +125,7 @@ echo "Script message"
 --------------F0724A537730ECB93BC9CEB4--
 EOF
 ;;
+#############################################################################################
 # html Mail with tracker
 html)
 cat > "$mail" <<EOF  
@@ -120,6 +141,7 @@ Hallo "$each"
 EOF
 ;;
 # office macro attachment
+#############################################################################################
 macro)
 cat > "$mail" <<EOF  
 Subject: office macro attachment
@@ -327,6 +349,7 @@ SwUGAAAAABQAFAA7BQAA5B8AAAAA
 --------------D59C128D75773CB14097244B--
 EOF
 ;;
+#############################################################################################
 # bad url in body
 url)
 cat > "$mail" <<EOF  
@@ -365,6 +388,7 @@ href="https://www.b6kkoniv.space/btc-outlet/"><IMG border=0 hspace=0 alt="" src=
 ------=_NextPart_000_0007_01D624F7.16387890
 EOF
 ;;
+#############################################################################################
 # encrypted zip attachment (pass geheim)
 encrypted)
 cat > "$mail" <<EOF  
@@ -402,6 +426,7 @@ b21VVAUAA+natl51eAsAAQT1AQAABBQAAABQSwUGAAAAAAEAAQBPAAAAowAAAAAA
 --------------646B851E8F58F54832B0C7AA--
 EOF
 ;;
+#############################################################################################
 # corrupt message (unscannable attachment)
 corrupt)
 cat > "$mail" <<EOF  
@@ -453,6 +478,7 @@ AAAAAQABADcAAAAyBAAAAAA=
 --------------5A2FDDB2EB722F44993C6192--
 EOF
 ;;
+#############################################################################################
 # detect IP or hostname and send spoofmessage
 *.*.*)
 cat > "$mail" <<EOF  
@@ -474,6 +500,7 @@ Liebe Gruesse aus Berlin
 Deine Angela
 EOF
 ;;
+#############################################################################################
 # Bulk Sender
 [1-9]|[1-9][0-9])
 cat > "$mail" <<EOF  
@@ -492,6 +519,7 @@ Hallo "$each"
 Message Number $COUNTER of $switch
 EOF
 ;;
+#############################################################################################
 # Default Angela Merkel Spoof Mail
 *)
 cat > "$mail" <<EOF  
@@ -514,18 +542,6 @@ Deine Angela
 EOF
 ;;
 esac
-# Todo:
-#
-# qr-code
-# exe in zip
-# exe in iso
-# makro in zip
-# exe in iso
-# activex in office
-# oleoject in office
-# vbscript, jsscript, python, perl, java ..
-# eml nested attachments
-# pyzor, razor hit
-# Phishing
-# office97 with makro
 }
+#############################################################################################
+
