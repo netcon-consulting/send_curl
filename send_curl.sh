@@ -2,7 +2,7 @@
 ############################################################################################################
 : << 'END'
 Uwe Sommer 05/2020
-Version 0.61
+Version 0.70
 send email with curl smtp directly (via TLS)
 usefull for testing mailservers and filtering SMTP gateways
 Some test messages included
@@ -21,6 +21,7 @@ Features:
 - direkt server addressing without MX Lookup possible
 - recipients can be specified directly or via listfile
 - message templates are stored in separate file (compose_message)
+- DSN support
 
 Install:
  "source send_curl.sh compose_message" or include these in your bashrc/zshrc as function
@@ -33,10 +34,8 @@ recipient can also be a file with a list of recipients (not for massmailings)
 
 Todos:
 - add more message templates 
-- wait for support of DSN in curl
 END
 #############################################################################################################
-#set -x # debug switch
 red=$(tput setaf 1)
 reset=$(tput sgr0)
 e_error () { # colorize function for errors in red
@@ -45,18 +44,8 @@ e_error () { # colorize function for errors in red
 #############################################################################################################
 sm () { # main function
 #############################################################################################################
-# Variables and catch input errors
-recipients="$1" # first param defines recipients
-switch="$2" # case selector for different message templates
-sender=evil@evil-domain.com # The sender address may be changed
-direct_server="$3"
-# template mail file will be created dynamically
-mail=/tmp/email.txt
-# get my external ip, do reverse lookup and use this as helo-name
-helo=$(dig +short -x $(dig +short myip.opendns.com @resolver1.opendns.com)|sed s/.$//)
-#############################################################################################################
-if [ -z "$1" ] # catch missing params
-then # display usage help text
+#set -x # debug switch
+helptext(){
 cat <<EOF
 
 	sm is a commandline mailer based on predefined templates
@@ -70,8 +59,34 @@ cat <<EOF
 	this will send a spammail to test@example.com
 	mail templates can be defined in the 'compose_message' function
 EOF
+}
+#############################################################################################################
+sender_dsn="<>" # need valid sender for DSN
+dsn=no # set to yes to retrieve a delivery status notification
+while getopts "h?vs:" opt; do # read additonal switches and remove them from params
+    case "$opt" in
+    h|\?) helptext ;return 0 ;;
+    v) dsn=yes ;;
+    s) sender_dsn=$OPTARG ;;
+    esac
+done
+shift $((OPTIND-1))
+[ "${1:-}" = "--" ] && shift # remove switches from params
+# Variables and catch input errors
+recipients="$1" # first param defines recipients
+switch="$2" # case selector for different message templates
+sender=evil@evil-domain.com # The sender address may be changed
+direct_server="$3"
+# template mail file will be created dynamically
+mail=/tmp/email.txt
+# get my external ip, do reverse lookup and use this as helo-name
+helo=$(dig +short -x $(dig +short myip.opendns.com @resolver1.opendns.com)|sed s/.$//)
+#############################################################################################################
+if [ -z "$1" ] # catch missing params
+then # display usage help text
+helptext
 	return 1
-elif [[ "$1" != *@* && ! -f "$1" ]]
+elif [[ "$1" != *@* && ! -f "$1" ]] # first param must be recipient address or addresslist-file
 then
 	e_error "valid E-mail address required"
 	return 1
@@ -94,7 +109,8 @@ dig_server () {	# if there is a third param, take this as server
 	fi
 }
 send_mail () { # sending mail template via curl to destination server and catch some errors
-	curl -k --ssl smtp://"$server"/"$helo" --mail-from "$sender" --mail-rcpt "$each" --upload-file "$mail"
+	[[ "$dsn" == "yes" ]] && curl -k -v --ssl smtp://"$server"/"$helo" --mail-from "$sender_dsn" --mail-rcpt "<$each> NOTIFY=SUCCESS" --upload-file "$mail" || # retrieve DSN notification
+	curl -k --ssl smtp://"$server"/"$helo" --mail-from "$sender" --mail-rcpt "$each" --upload-file "$mail" # or send normal message with spoofed sender
 	res=$? # catch curl errorcodes or use '-v' debug switch above for more details
 	if [ "$res" -eq "55" ] ;then
 	e_error "greylisting detected, waiting 300 Secs for retry"
