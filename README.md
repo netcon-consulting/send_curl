@@ -10,6 +10,7 @@ These templates can be used to test mailfilters.
  - direkt server addressing without MX Lookup possible
  - recipients can be specified directly or via listfile
  - message templates are stored in separate file (compose_mail)
+ - supports DSN with '-vf $sender' switch as first parameter
 
  Install:
   "source sm.sh" and "source  compose_message" or include these in your bashrc as function by adding this line
@@ -23,3 +24,5 @@ These templates can be used to test mailfilters.
  
  Type can be: macro,html,url,virus,spam,corrupt,spoof or massmailing (1-100)
  recipient can also be a file with a list of recipients (not for massmailings)
+ 
+ This script might not work on any IP address because some mailservers check your IP against blacklists or require a valid   Reverse DNS (PTR) for your IP.
