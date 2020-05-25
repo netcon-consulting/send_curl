@@ -46,7 +46,9 @@ sm () { # main function
 #############################################################################################################
 #set -x # debug switch
 gettemplates() {
-	typeset -f compose_message |grep -e "[a-z]*)" |grep -v "date\|*\|template\|compose_message\|\[" |awk '{print $1}' |tr -d "()" |tr '\n' ' '
+	typeset -f compose_message |grep -e "[a-z]*)" |
+	grep -v "date\|*\|template\|compose_message\|\[" |
+	awk '{print $1}' |tr -d "()" |tr '\n' ' '
 }
 helptext(){
 cat <<EOF
@@ -57,21 +59,21 @@ cat <<EOF
 	email address or email address file argument required
 	second param can define message type: 
 			
-	$(e_error)$(gettemplates)
+	${red}$(gettemplates)${reset}
 	
 	an optional third paramter defines destination server
 	
 	Examples: 
-	${red}'sm test@example.com spam'${reset}
+	${red}sm test@example.com spam${reset}
 	this will send a spammail to test@example.com
 
-	${red}'sm test@example.com spam destserver'${reset}
+	${red}sm test@example.com spam destserver${reset}
 	this will send a spammail to test@example.com on server destserver
 
-	${red}'sm -vs validsender test@example.com'${reset}
+	${red}sm -vs validsender test@example.com${reset}
 	this will get a DSN notification if the destination server supports it to validsender
 
-	${red}'sm test@example.com 10'${reset}
+	${red}sm test@example.com 10${reset}
 	this will send 10 messages to test@example.com
 
 	additional mail templates can be defined in the 'compose_message' function
