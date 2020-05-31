@@ -82,13 +82,13 @@ EOF
 #############################################################################################################
 sender_dsn="<>" # need valid sender for DSN
 dsn=no # set to yes to retrieve a delivery status notification
-while getopts "h?vs:" opt; do # read additonal switches and remove them from params
+while getopts "h?vst:" opt; do # read additonal switches and remove them from params
     case "$opt" in
     h|\?) helptext ;return 0 ;;
     v) dsn=yes ;;
     s) sender_dsn=$OPTARG ;;
-    esac
-done
+	t) tracking_url=$OPTARG ;; # not in use so far
+esac done
 shift $((OPTIND-1))
 [ "${1:-}" = "--" ] && shift # remove switches from params
 # Variables and catch input errors
